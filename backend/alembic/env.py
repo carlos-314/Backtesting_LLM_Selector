@@ -1,14 +1,27 @@
+"""Entorno Alembic — apunta a la BBDD propia y a Base de F2 §5.
+
+La URL se deriva de `settings.APP_DATABASE_URL` quitando el driver async
+(`+asyncpg`) porque Alembic ejecuta migraciones en modo sync.
+"""
 from logging.config import fileConfig
 
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
 from app.config import settings
-from app.database import Base
-from app.models import *  # noqa: F401, F403 — ensure all models are imported
+from app.infrastructure.persistence.app_db import Base
+
+# Importar los módulos que registran modelos en Base.metadata.
+from app.infrastructure.persistence import models  # noqa: F401
 
 config = context.config
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL_SYNC)
+
+
+def _sync_url(async_url: str) -> str:
+    return async_url.replace("postgresql+asyncpg://", "postgresql+psycopg2://", 1)
+
+
+config.set_main_option("sqlalchemy.url", _sync_url(settings.APP_DATABASE_URL))
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)

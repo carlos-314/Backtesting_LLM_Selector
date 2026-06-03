@@ -6,7 +6,7 @@ services:
       POSTGRES_USER: backtesting
       POSTGRES_PASSWORD: backtesting_dev
     ports:
-      - "5432:5432"
+      - "55432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
@@ -56,7 +56,10 @@ services:
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       CORS_ORIGINS: '["http://localhost:5173"]'
     ports:
-      - "8000:8000"
+      # host:container — usamos 18000 en el host para que dev nativo y docker
+      # converjan al mismo puerto host (8000 está reservado por Windows
+      # Hyper-V port exclusions). Dentro del container sigue siendo 8000.
+      - "18000:8000"
     volumes:
       - ./backend:/app
     depends_on:
@@ -119,6 +122,10 @@ services:
     environment:
       VITE_API_BASE_URL: ""
       VITE_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      # Dentro del compose, el proxy /api apunta al servicio `backend` por
+      # nombre. Fuera de docker (dev nativo), no se define y vite.config.ts
+      # usa el default `localhost:18000`.
+      VITE_PROXY_TARGET: "http://backend:8000"
 
 volumes:
   postgres-data:

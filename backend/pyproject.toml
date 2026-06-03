@@ -10,18 +10,15 @@ dependencies = [
     "asyncpg>=0.30",
     "psycopg2-binary>=2.9",
     "alembic>=1.14",
-    "celery[redis]>=5.4",
+    "arq>=0.26",
     "redis>=5.0",
-    "boto3>=1.35",
     "python-jose[cryptography]>=3.3",
     "google-auth>=2.35",
     "google-auth-httplib2>=0.2",
     "httpx>=0.27",
-    "python-multipart>=0.0.12",
-    "openpyxl>=3.1",
     "yfinance>=0.2",
-    "pandas>=2.2",
     "numpy>=2.0",
+    "pydantic[email]>=2.9",
     "pydantic-settings>=2.6",
 ]
 
@@ -33,9 +30,13 @@ dev = [
     "ruff>=0.8",
 ]
 
+[tool.setuptools.packages.find]
+include = ["app*"]
+
 [tool.ruff]
 line-length = 120
 target-version = "py311"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+testpaths = ["tests"]

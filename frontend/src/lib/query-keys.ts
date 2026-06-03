@@ -1,29 +1,35 @@
+/**
+ * Claves canónicas de TanStack Query para invalidación tabulada (F3 §6.4).
+ *
+ * Centralizar las claves aquí evita typos y permite invalidar familias
+ * enteras desde el `mapa de invalidación`.
+ */
+
 export const queryKeys = {
   auth: {
-    me: ['auth', 'me'] as const,
+    me: () => ["auth", "me"] as const,
   },
-  workspaces: {
-    all: ['workspaces'] as const,
-    detail: (id: string) => ['workspaces', id] as const,
-    members: (id: string) => ['workspaces', id, 'members'] as const,
-  },
-  uploads: {
-    all: (wsId: string) => ['uploads', wsId] as const,
-    detail: (wsId: string, id: string) => ['uploads', wsId, id] as const,
-  },
-  signals: {
-    weeks: (wsId: string) => ['signals', 'weeks', wsId] as const,
-    heatmap: (wsId: string) => ['signals', 'heatmap', wsId] as const,
-    weekDetail: (wsId: string, weekDate: string) => ['signals', 'week', wsId, weekDate] as const,
-    dossier: (wsId: string, weekDate: string, ticker: string) =>
-      ['signals', 'dossier', wsId, weekDate, ticker] as const,
+  screening: {
+    all: () => ["screening"] as const,
+    weeks: (params?: { from?: string; to?: string }) =>
+      ["screening", "weeks", params ?? {}] as const,
+    picks: (weekDate: string) => ["screening", "picks", weekDate] as const,
+    companies: (weekDate: string, cursor?: string | null) =>
+      ["screening", "companies", weekDate, cursor ?? null] as const,
+    company: (weekDate: string, ticker: string) =>
+      ["screening", "company", weekDate, ticker] as const,
+    matrix: (from: string, to: string) =>
+      ["screening", "matrix", from, to] as const,
   },
   backtests: {
-    all: (wsId: string) => ['backtests', wsId] as const,
-    detail: (btId: string) => ['backtests', 'detail', btId] as const,
-    compare: (ids: string[]) => ['backtests', 'compare', ...ids] as const,
+    all: () => ["backtests"] as const,
+    list: (params?: { status?: string; cursor?: string | null }) =>
+      ["backtests", "list", params ?? {}] as const,
+    detail: (id: string) => ["backtests", "detail", id] as const,
+    result: (id: string) => ["backtests", "result", id] as const,
+    snapshot: (id: string) => ["backtests", "snapshot", id] as const,
   },
-  jobs: {
-    detail: (jobId: string) => ['jobs', jobId] as const,
+  admin: {
+    users: () => ["admin", "users"] as const,
   },
-} as const;
+};

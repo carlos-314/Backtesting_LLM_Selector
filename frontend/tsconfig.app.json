@@ -2,7 +2,7 @@
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "es2023",
-    "lib": ["ES2023", "DOM"],
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "module": "esnext",
     "types": ["vite/client"],
     "skipLibCheck": true,
@@ -15,7 +15,13 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* Path aliasing — F3 §3.4. TS 6+ no necesita `baseUrl`. */
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
     /* Linting */
+    "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
