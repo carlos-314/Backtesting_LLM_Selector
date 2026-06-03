@@ -35,8 +35,9 @@ jobs:
           --health-retries 10
 
     env:
-      # Sobrescribe el default local del .env (que no se commitea) para CI.
-      APP_DATABASE_URL: postgresql+asyncpg://backtesting:backtesting_dev@localhost:55432/backtesting_app
+      # APP_DATABASE_URL no se pasa: el conftest.py raíz fija
+      # `postgresql+asyncpg://...backtesting_app_test` antes de cualquier import
+      # de la app. Aquí solo establecemos los secretos.
       ANALYSIS_DATABASE_URL: ""  # los tests crean su propia BBDD de test
       JWT_SECRET: ci-test-secret
       GOOGLE_CLIENT_ID: ci-test-client-id
@@ -60,17 +61,22 @@ jobs:
           pip install -e ".[dev]"
           pip install pytest-cov
 
-      - name: Create analysis test DB
+      - name: Create test databases
         run: |
+          PGPASSWORD=backtesting_dev psql -h localhost -p 55432 -U backtesting -d backtesting_app \
+            -c "CREATE DATABASE backtesting_app_test;"
           PGPASSWORD=backtesting_dev psql -h localhost -p 55432 -U backtesting -d backtesting_app \
             -c "CREATE DATABASE backtesting_analysis_test;"
 
-      - name: Apply Alembic migrations
+      - name: Apply Alembic migrations on dev DB
         working-directory: backend
+        env:
+          APP_DATABASE_URL: postgresql+asyncpg://backtesting:backtesting_dev@localhost:55432/backtesting_app
         run: alembic upgrade head
 
       - name: Run backend test suite (coverage)
         working-directory: backend
+        # conftest.py fija APP_DATABASE_URL → backtesting_app_test antes de imports
         run: pytest tests/ --cov=app --cov-branch --cov-report=term --cov-report=xml -q
 
       - name: Upload coverage artifact
