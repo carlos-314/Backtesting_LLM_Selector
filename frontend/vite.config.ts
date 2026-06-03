@@ -4,10 +4,13 @@ import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 
 // Target del proxy /api configurable por env:
-//   - Dev nativo (Windows): default `localhost:18000` — el puerto 8000 está
-//     reservado por Hyper-V port exclusions, ver `backend/README.md`.
+//   - Dev nativo (Windows): default `127.0.0.1:18000` (IPv4 explícito).
+//     uvicorn escucha solo en IPv4 por defecto; Node 18+ resuelve `localhost`
+//     a `::1` (IPv6) y la conexión sería rechazada (ECONNREFUSED).
+//     El puerto 8000 está reservado por Hyper-V port exclusions
+//     (ver `backend/README.md`).
 //   - Docker compose: `VITE_PROXY_TARGET=http://backend:8000` (servicio compose).
-const proxyTarget = process.env.VITE_PROXY_TARGET || 'http://localhost:18000'
+const proxyTarget = process.env.VITE_PROXY_TARGET || 'http://127.0.0.1:18000'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
