@@ -37,6 +37,9 @@ construcción en [`docs/decisiones/`](docs/decisiones/) (ADR-0001…0007).
 docker compose up -d postgres
 docker exec backtesting_llm_selector-postgres-1 psql -U backtesting -d postgres \
   -c "CREATE DATABASE backtesting_app;" || true
+# BBDDs de test (aisladas del dev — los tests no tocan backtesting_app)
+docker exec backtesting_llm_selector-postgres-1 psql -U backtesting -d postgres \
+  -c "CREATE DATABASE backtesting_app_test;" || true
 docker exec backtesting_llm_selector-postgres-1 psql -U backtesting -d postgres \
   -c "CREATE DATABASE backtesting_analysis_test;" || true
 ```
