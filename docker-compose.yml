@@ -52,7 +52,7 @@ services:
       MINIO_SECRET_KEY: minioadmin
       MINIO_BUCKET: uploads
       MINIO_USE_SSL: "false"
-      JWT_SECRET: dev-secret-change-in-production
+      JWT_SECRET: ${JWT_SECRET}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       CORS_ORIGINS: '["http://localhost:5173"]'
     ports:

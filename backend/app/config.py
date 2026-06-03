@@ -1,4 +1,8 @@
+from pathlib import Path
+
 from pydantic_settings import BaseSettings
+
+ROOT_ENV = Path(__file__).resolve().parents[2] / ".env"
 
 
 class Settings(BaseSettings):
@@ -21,7 +25,7 @@ class Settings(BaseSettings):
 
     CORS_ORIGINS: list[str] = ["http://localhost:5173"]
 
-    model_config = {"env_file": ".env", "extra": "ignore"}
+    model_config = {"env_file": str(ROOT_ENV), "extra": "ignore"}
 
 
 settings = Settings()
