@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p backend/alembic/versions backend/app/models backend/app/schemas backend/app/routers backend/app/services backend/app/tasks backend/app/utils backend/tests/test_api)",
+      "Bash(mkdir -p frontend)",
+      "Bash(mv:*)",
+      "Bash(npm create:*)",
+      "Bash(mkdir:*)",
+      "Bash(rm -f src/App.css src/assets/hero.png src/assets/react.svg src/assets/vite.svg)",
+      "Bash(npx tsc:*)",
+      "Bash(docker --version)",
+      "Bash(docker volume:*)"
+    ]
+  }
+}

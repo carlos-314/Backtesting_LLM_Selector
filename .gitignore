@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+
+# Node
+node_modules/
+frontend/dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+**/.env
+.env.local
+.env.production
+
+# Data files (keep in repo root for reference, but not in version control for large sets)
+*.xlsx
+*.csv
+
+# Docker
+docker-data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# MinIO data
+minio-data/
+
+# Alembic
+alembic/versions/__pycache__/
+
+# pytest
+.pytest_cache/
+htmlcov/
+.coverage
