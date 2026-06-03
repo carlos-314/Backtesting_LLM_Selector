@@ -15,7 +15,7 @@
  *   - por país
  */
 import * as React from "react";
-import { Search, X } from "lucide-react";
+import { Check, Minus, Search, X } from "lucide-react";
 
 import { DataState } from "@/components/base/DataState";
 import { PageHeader } from "@/components/base/PageHeader";
@@ -161,6 +161,8 @@ export function MatrixView() {
         }
       />
 
+      <Legend />
+
       <FiltersBar
         search={search}
         onSearch={setSearch}
@@ -186,6 +188,48 @@ export function MatrixView() {
         )}
       </DataState>
     </>
+  );
+}
+
+function Legend() {
+  return (
+    <div
+      className="mb-3 flex flex-wrap items-center gap-4 text-xs text-muted-foreground"
+      aria-label="Leyenda de estados de celda"
+    >
+      <span className="font-medium text-foreground">Leyenda:</span>
+      <span className="inline-flex items-center gap-1.5">
+        <span
+          className="inline-flex h-5 w-5 items-center justify-center rounded-sm bg-primary text-primary-foreground"
+          aria-hidden="true"
+        >
+          <Check className="h-3 w-3" />
+        </span>
+        <span>
+          <strong className="text-foreground">Seleccionada</strong> · entró al portfolio ese run
+        </span>
+      </span>
+      <span className="inline-flex items-center gap-1.5">
+        <span
+          className="inline-flex h-5 w-5 items-center justify-center rounded-sm bg-muted text-muted-foreground"
+          aria-hidden="true"
+        >
+          <Minus className="h-3 w-3" />
+        </span>
+        <span>
+          <strong className="text-foreground">En universo</strong> · analizada pero no seleccionada
+        </span>
+      </span>
+      <span className="inline-flex items-center gap-1.5">
+        <span
+          className="inline-block h-5 w-5 rounded-sm border bg-card"
+          aria-hidden="true"
+        />
+        <span>
+          <strong className="text-foreground">No estuvo</strong> · no apareció en ese run
+        </span>
+      </span>
+    </div>
   );
 }
 
